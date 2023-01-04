@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1059653036464",
+    "project_id": "m06-uf3-ac1-firebase",
+    "storage_bucket": "m06-uf3-ac1-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059653036464:android:dacb1cab0da92208a38e75",
+        "android_client_info": {
+          "package_name": "edu.uoc.ac1_android_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059653036464-89r11v6hjm0fsd0r1vvaskea9uenns4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTf6AbiVUJrtAXocQWcqT1evGlJYQZSXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059653036464-89r11v6hjm0fsd0r1vvaskea9uenns4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
