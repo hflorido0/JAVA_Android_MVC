@@ -4,13 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import edu.uoc.ac1_android_firebase.R;
 import edu.uoc.ac1_android_firebase.controller.Controller;
 
 public class HomeActivity extends AppCompatActivity  implements ViewActivity{
 
-    private Button logoutButon;
+    private RelativeLayout logoutButton;
+    private RelativeLayout profileButton;
+    private RelativeLayout ahorcadoButton;
+    private RelativeLayout paraulogicButton;
+    private RelativeLayout estadisticasButton;
+    private RelativeLayout otrosButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +32,35 @@ public class HomeActivity extends AppCompatActivity  implements ViewActivity{
 
     @Override
     public void createAllItemsAsGlobalWithGetters() {
-        this.logoutButon = (Button) findViewById(R.id.idLogout);
+        this.logoutButton = (RelativeLayout) findViewById(R.id.idLogout);
+        this.profileButton = (RelativeLayout) findViewById(R.id.idProfile);
+        this.ahorcadoButton = (RelativeLayout) findViewById(R.id.idParaulogic);
+        this.paraulogicButton = (RelativeLayout) findViewById(R.id.idHangOut);
+        this.estadisticasButton = (RelativeLayout) findViewById(R.id.idStadistics);
+        this.otrosButton = (RelativeLayout) findViewById(R.id.idOtros);
     }
 
-    public Button getLogoutButon() {
-        return logoutButon;
+    public RelativeLayout getLogoutButton() {
+        return logoutButton;
+    }
+
+    public RelativeLayout getAhorcadoButton() {
+        return ahorcadoButton;
+    }
+
+    public RelativeLayout getEstadisticasButton() {
+        return estadisticasButton;
+    }
+
+    public RelativeLayout getProfileButton() {
+        return profileButton;
+    }
+
+    public RelativeLayout getParaulogicButton() {
+        return paraulogicButton;
+    }
+
+    public RelativeLayout getOtrosButton() {
+        return otrosButton;
     }
 }

@@ -99,7 +99,7 @@ public class Controller {
     }
 
     private void setHomeActivityButtons() {
-        this.homeActivity.getLogoutButon().setOnClickListener(new View.OnClickListener() {
+        this.homeActivity.getLogoutButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clearSession();
@@ -140,12 +140,13 @@ public class Controller {
             }
         });
 
-        String email = this.loginActivity.getEmail().getText().toString();
-        String password = this.loginActivity.getPassword().getText().toString();
-
         this.loginActivity.getRegisterButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                String email = loginActivity.getEmail().getText().toString();
+                String password = loginActivity.getPassword().getText().toString();
+
                 if (!email.isEmpty() && !password.isEmpty()) {
 
                     //creamos una instancia con usuario y contraseña
@@ -155,7 +156,7 @@ public class Controller {
                             if (task.isSuccessful()) {
                                 saveSession(Provider.LOGIN.toString());
                             } else {
-                                showAlert(loginActivity, "Error en el login");
+                                showAlert(loginActivity, task.getException().getMessage());
                             }
                         }
                     });
@@ -168,6 +169,10 @@ public class Controller {
         this.loginActivity.getSigninButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                String email = loginActivity.getEmail().getText().toString();
+                String password = loginActivity.getPassword().getText().toString();
+
                 if (!email.isEmpty() && !password.isEmpty()) {
 
                     //creamos una instancia con usuario y contraseña

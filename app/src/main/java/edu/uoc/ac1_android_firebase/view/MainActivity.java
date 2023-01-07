@@ -10,8 +10,19 @@ public class MainActivity extends AppCompatActivity implements ViewActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        setTheme(R.style.Theme_AC1AndroidFirebase);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         callControllerWithThisActivityAsParameter();
     }
 
