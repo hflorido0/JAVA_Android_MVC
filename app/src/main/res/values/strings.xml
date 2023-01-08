@@ -3,4 +3,5 @@
     <string name="email">Email</string>
     <string name="Password">Contraseña</string>
     <string name="prefs_files">PREFERENCES_FILE_KEY</string>
+    <string name="paraules">Paraula</string>
 </resources>

@@ -22,19 +22,28 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import edu.uoc.ac1_android_firebase.model.Ahorcado;
+import edu.uoc.ac1_android_firebase.model.Paraulogic;
+import edu.uoc.ac1_android_firebase.model.Stadistics;
 import edu.uoc.ac1_android_firebase.model.User;
 import edu.uoc.ac1_android_firebase.utils.Provider;
 import edu.uoc.ac1_android_firebase.utils.Constants;
+import edu.uoc.ac1_android_firebase.view.AhorcadoActivity;
 import edu.uoc.ac1_android_firebase.view.HomeActivity;
 import edu.uoc.ac1_android_firebase.view.MainActivity;
 import edu.uoc.ac1_android_firebase.R;
 import edu.uoc.ac1_android_firebase.view.LoginActivity;
+import edu.uoc.ac1_android_firebase.view.ParaulogicActivity;
+import edu.uoc.ac1_android_firebase.view.ProfileActivity;
 
 public class Controller {
     //Todas las activities como variables globales
     private MainActivity mainActivity;
     private LoginActivity loginActivity;
     private HomeActivity homeActivity;
+    private ProfileActivity profileActivity;
+    private AhorcadoActivity ahorcadoActivity;
+    private ParaulogicActivity paraulogicActivity;
 
     private FirebaseFirestore firebase;
 
@@ -49,6 +58,9 @@ public class Controller {
     public Controller () {
         this.loginActivity = new LoginActivity();
         this.homeActivity = new HomeActivity();
+        this.profileActivity = new ProfileActivity();
+        this.ahorcadoActivity = new AhorcadoActivity();
+        this.paraulogicActivity = new ParaulogicActivity();
         this.firebase = FirebaseFirestore.getInstance();
     }
 
@@ -69,6 +81,34 @@ public class Controller {
         this.homeActivity = homeActivity;
         this.homeActivity.createAllItemsAsGlobalWithGetters();
         setHomeActivityButtons();
+    }
+
+    public void profileActivity(ProfileActivity profileActivity) {
+        this.profileActivity = profileActivity;
+        this.profileActivity.createAllItemsAsGlobalWithGetters();
+        setProfileActivityButtons();
+    }
+
+    public void ahorcadoActivity(AhorcadoActivity ahorcadoActivity) {
+        this.ahorcadoActivity = ahorcadoActivity;
+        setAhorcadoActivityButtons();
+    }
+
+    public void paraulogicActivity(ParaulogicActivity paraulogicActivity) {
+        this.paraulogicActivity = paraulogicActivity;
+        setParaulogicActivityButtons();
+    }
+
+    private void setParaulogicActivityButtons() {
+        //TODO:
+    }
+
+    private void setAhorcadoActivityButtons() {
+        //TODO:
+    }
+
+    private void setProfileActivityButtons() {
+        //TODO:
     }
 
     public void logginWithGoogle(Intent data) {
@@ -94,7 +134,19 @@ public class Controller {
         }
     }
 
-    public void returnCollectedData(User user) {
+    public void returnUser(User user) {
+        //TODO:
+    }
+
+    public void returnAhorcado (Ahorcado ahorcado) {
+        //TODO:
+    }
+
+    public void returnEstadistica (Stadistics stadistics) {
+        //TODO:
+    }
+
+    public void returnParaulogic (Paraulogic paraulogic) {
         //TODO:
     }
 
@@ -105,6 +157,27 @@ public class Controller {
                 clearSession();
             }
         });
+
+        this.homeActivity.getAhorcadoButton().setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivity(homeActivity, ahorcadoActivity);
+            }
+        }));
+
+        this.homeActivity.getParaulogicButton().setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivity(homeActivity, paraulogicActivity);
+            }
+        }));
+
+        this.homeActivity.getProfileButton().setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivity(homeActivity, profileActivity);
+            }
+        }));
     }
 
     private boolean checkSession () {

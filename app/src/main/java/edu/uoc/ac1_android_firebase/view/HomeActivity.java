@@ -34,8 +34,8 @@ public class HomeActivity extends AppCompatActivity  implements ViewActivity{
     public void createAllItemsAsGlobalWithGetters() {
         this.logoutButton = (RelativeLayout) findViewById(R.id.idLogout);
         this.profileButton = (RelativeLayout) findViewById(R.id.idProfile);
-        this.ahorcadoButton = (RelativeLayout) findViewById(R.id.idParaulogic);
-        this.paraulogicButton = (RelativeLayout) findViewById(R.id.idHangOut);
+        this.ahorcadoButton = (RelativeLayout) findViewById(R.id.idHangOut);
+        this.paraulogicButton = (RelativeLayout) findViewById(R.id.idParaulogic);
         this.estadisticasButton = (RelativeLayout) findViewById(R.id.idStadistics);
         this.otrosButton = (RelativeLayout) findViewById(R.id.idOtros);
     }
