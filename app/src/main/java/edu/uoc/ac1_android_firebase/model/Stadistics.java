@@ -1,4 +1,6 @@
 package edu.uoc.ac1_android_firebase.model;
 
-public class Stadistics {
+import java.io.Serializable;
+
+public class Stadistics  implements Serializable {
 }

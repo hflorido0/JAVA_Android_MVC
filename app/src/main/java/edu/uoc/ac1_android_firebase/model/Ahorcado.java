@@ -1,4 +1,6 @@
 package edu.uoc.ac1_android_firebase.model;
 
-public class Ahorcado {
+import java.io.Serializable;
+
+public class Ahorcado implements Serializable {
 }

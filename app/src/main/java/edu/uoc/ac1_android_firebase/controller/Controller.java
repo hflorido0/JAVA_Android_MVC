@@ -15,16 +15,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import edu.uoc.ac1_android_firebase.model.Ahorcado;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
+import edu.uoc.ac1_android_firebase.dao.Persistencia;
 import edu.uoc.ac1_android_firebase.model.Paraulogic;
-import edu.uoc.ac1_android_firebase.model.Stadistics;
 import edu.uoc.ac1_android_firebase.model.User;
 import edu.uoc.ac1_android_firebase.utils.Provider;
 import edu.uoc.ac1_android_firebase.utils.Constants;
@@ -35,6 +42,7 @@ import edu.uoc.ac1_android_firebase.R;
 import edu.uoc.ac1_android_firebase.view.LoginActivity;
 import edu.uoc.ac1_android_firebase.view.ParaulogicActivity;
 import edu.uoc.ac1_android_firebase.view.ProfileActivity;
+import edu.uoc.ac1_android_firebase.view.StadisticsActivity;
 
 public class Controller {
     //Todas las activities como variables globales
@@ -44,8 +52,9 @@ public class Controller {
     private ProfileActivity profileActivity;
     private AhorcadoActivity ahorcadoActivity;
     private ParaulogicActivity paraulogicActivity;
+    private StadisticsActivity stadisticsActivity;
 
-    private FirebaseFirestore firebase;
+    private Persistencia persistencia;
 
     //SIngleton
     private static Controller controller;
@@ -61,7 +70,8 @@ public class Controller {
         this.profileActivity = new ProfileActivity();
         this.ahorcadoActivity = new AhorcadoActivity();
         this.paraulogicActivity = new ParaulogicActivity();
-        this.firebase = FirebaseFirestore.getInstance();
+        this.stadisticsActivity = new StadisticsActivity();
+        this.persistencia = new Persistencia(FirebaseFirestore.getInstance());
     }
 
     public void mainActivity(MainActivity mainActivity) {
@@ -91,16 +101,35 @@ public class Controller {
 
     public void ahorcadoActivity(AhorcadoActivity ahorcadoActivity) {
         this.ahorcadoActivity = ahorcadoActivity;
+        this.ahorcadoActivity.createAllItemsAsGlobalWithGetters();
         setAhorcadoActivityButtons();
     }
 
     public void paraulogicActivity(ParaulogicActivity paraulogicActivity) {
         this.paraulogicActivity = paraulogicActivity;
+        this.paraulogicActivity.createAllItemsAsGlobalWithGetters();
         setParaulogicActivityButtons();
+    }
+
+    public void stadisticsActivity(StadisticsActivity stadisticsActivity) {
+        this.stadisticsActivity = stadisticsActivity;
+        this.stadisticsActivity.createAllItemsAsGlobalWithGetters();
+        setStadisticsActivityButtons();
+    }
+
+    private void setStadisticsActivityButtons() {
+        //TODO:
     }
 
     private void setParaulogicActivityButtons() {
         //TODO:
+    }
+
+    private Paraulogic getParaulogicFromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
+        return new Paraulogic((List<String>) documentSnapshot.get(Constants.RESPUESTAS),
+                (List<String>) documentSnapshot.get(Constants.SOLUTIONS),
+                (int)((long) documentSnapshot.get(Constants.PARAULOGIC)),
+                (int)((long) documentSnapshot.get(Constants.P_GANADAS)));
     }
 
     private void setAhorcadoActivityButtons() {
@@ -108,7 +137,17 @@ public class Controller {
     }
 
     private void setProfileActivityButtons() {
-        //TODO:
+        this.profileActivity.getGuardar().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HashMap<String, String> values = new HashMap<>();
+                values.put(Constants.NAME, profileActivity.getName());
+
+                persistencia.update(loginActivity.getEmail(), Constants.USER_COLLECTION, values);
+
+                showAlert(profileActivity, "GUARDADO", "BBDD");
+            }
+        });
     }
 
     public void logginWithGoogle(Intent data) {
@@ -134,20 +173,31 @@ public class Controller {
         }
     }
 
-    public void returnUser(User user) {
-        //TODO:
+    private void createNewParaulogic() {
+        Random random = new Random();
+        //TODO: use random when more than 1 element
+        //int rand = random.nextInt(Constants.drawables.length-1);
+        int rand = 0;
+        int randomDrawable = Constants.drawables[rand];
+        String[] paraulogic = Constants.paraulogics[rand];
+
+        HashMap<String, Object> values = new HashMap<>();
+        values.put(Constants.SOLUTIONS, Arrays.asList(paraulogic));
+        values.put(Constants.RESPUESTAS, Arrays.asList());
+        values.put(Constants.P_GANADAS, 0);
+        values.put(Constants.PARAULOGIC, randomDrawable);
+
+        persistencia.save(loginActivity.getEmail(), Constants.PARAULOGIC_COLLECTION, values);
+
+        Paraulogic para = new Paraulogic(Arrays.asList(),Arrays.asList(paraulogic), randomDrawable, 0);
+
+        setParaulogicPartida(para);
     }
 
-    public void returnAhorcado (Ahorcado ahorcado) {
-        //TODO:
-    }
-
-    public void returnEstadistica (Stadistics stadistics) {
-        //TODO:
-    }
-
-    public void returnParaulogic (Paraulogic paraulogic) {
-        //TODO:
+    private void setParaulogicPartida(Paraulogic para) {
+        paraulogicActivity.getParaulogic()
+                .setImageDrawable(loginActivity.getResources().getDrawable(para.getImg()));
+        paraulogicActivity.getParaulogicWrods().setText(para.getRespuestas().toString());
     }
 
     private void setHomeActivityButtons() {
@@ -169,13 +219,46 @@ public class Controller {
             @Override
             public void onClick(View view) {
                 switchActivity(homeActivity, paraulogicActivity);
+                if (paraulogicActivity.getProgressBar() != null)
+                    paraulogicActivity.getProgressBar().setVisibility(View.VISIBLE);
+                persistencia.get(loginActivity.getEmail(), Constants.PARAULOGIC_COLLECTION).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.get(Constants.P_GANADAS) == null) {
+                            createNewParaulogic();
+                        } else {
+                            setParaulogicPartida(getParaulogicFromDocumentSnapshot(documentSnapshot));
+                        }
+                        paraulogicActivity.getProgressBar().setVisibility(View.GONE);
+                    }
+                });
             }
         }));
 
         this.homeActivity.getProfileButton().setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchActivity(homeActivity, profileActivity);
+                Task<DocumentSnapshot> user = persistencia.get(loginActivity.getEmail(), Constants.USER_COLLECTION);
+                user.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        User user = new User(
+                                loginActivity.getEmail(),
+                                Provider.valueOf(documentSnapshot.get(Constants.PROVIDER).toString()),
+                                documentSnapshot.get(Constants.NAME) != null ?
+                                        documentSnapshot.get(Constants.NAME).toString() : ""
+                        );
+                        switchActivity(homeActivity, profileActivity, Constants.USER_COLLECTION, user);
+                    }
+                });
+
+            }
+        }));
+
+        this.homeActivity.getEstadisticasButton().setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchActivity(homeActivity, stadisticsActivity);
             }
         }));
     }
@@ -183,9 +266,10 @@ public class Controller {
     private boolean checkSession () {
         SharedPreferences prefs = this.loginActivity.getSharedPreferences(
                 this.loginActivity.getString(R.string.prefs_files), Context.MODE_PRIVATE);
-        String email = prefs.getString("email", null);
-        String provider = prefs.getString("provider", null);
+        String email = prefs.getString(Constants.EMAIL, null);
+        String provider = prefs.getString(Constants.PROVIDER, null);
         if (email != null && provider != null) {
+            loginActivity.setEmail(email);
             switchActivity(this.loginActivity, this.homeActivity);
             return true;
         }
@@ -217,8 +301,8 @@ public class Controller {
             @Override
             public void onClick(View view) {
 
-                String email = loginActivity.getEmail().getText().toString();
-                String password = loginActivity.getPassword().getText().toString();
+                String email = loginActivity.getEmail();
+                String password = loginActivity.getPassword();
 
                 if (!email.isEmpty() && !password.isEmpty()) {
 
@@ -243,8 +327,8 @@ public class Controller {
             @Override
             public void onClick(View view) {
 
-                String email = loginActivity.getEmail().getText().toString();
-                String password = loginActivity.getPassword().getText().toString();
+                String email = loginActivity.getEmail();
+                String password = loginActivity.getPassword();
 
                 if (!email.isEmpty() && !password.isEmpty()) {
 
@@ -271,22 +355,33 @@ public class Controller {
     }
 
     private void showAlert(Activity activity, String message) {
+        showAlert(activity, message, "ERROR");
+    }
+
+    private void showAlert(Activity activity, String message, String title) {
         AlertDialog dialog = new AlertDialog.Builder(activity)
-                .setTitle("ERROR")
+                .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton("Aceptar", null)
                 .create();
         dialog.show();
     }
 
+
     private void saveSession(String provider) {
 
         // Guardar datos de sesión
         SharedPreferences.Editor prefs = this.loginActivity.getSharedPreferences(
                 this.loginActivity.getString(R.string.prefs_files), Context.MODE_PRIVATE).edit();
-        prefs.putString("email",this.loginActivity.getEmail().getText().toString());
-        prefs.putString("provider", provider);
+        prefs.putString(Constants.EMAIL,this.loginActivity.getEmail());
+        prefs.putString(Constants.PROVIDER, provider);
         prefs.apply();
+
+        HashMap<String, String> values = new HashMap<>();
+        values.put(Constants.PROVIDER, provider);
+
+        persistencia.save(loginActivity.getEmail(), Constants.USER_COLLECTION, values);
+
         switchActivity(this.loginActivity, this.homeActivity);
     }
 
@@ -302,8 +397,15 @@ public class Controller {
         switchActivity(this.homeActivity, this.mainActivity);
     }
 
-    public void switchActivity(Activity from, Activity to) {
+    private void switchActivity(Activity from, Activity to) {
+        switchActivity(from, to, "", null);
+    }
+
+    private void switchActivity(Activity from, Activity to, String extraKey, Object extra) {
         Intent intent = new Intent(from, to.getClass());
+        if (extra != null) {
+            intent.putExtra(extraKey, (Serializable) extra);
+        }
         from.startActivity(intent);
     }
 }

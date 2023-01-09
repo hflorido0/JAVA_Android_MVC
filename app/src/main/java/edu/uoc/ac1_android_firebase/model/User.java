@@ -1,8 +1,10 @@
 package edu.uoc.ac1_android_firebase.model;
 
+import java.io.Serializable;
+
 import edu.uoc.ac1_android_firebase.utils.Provider;
 
-public class User {
+public class User  implements Serializable {
     private String email;
     private Provider provider;
     private String name;

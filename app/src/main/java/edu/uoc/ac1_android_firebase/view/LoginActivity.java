@@ -51,12 +51,16 @@ public class LoginActivity extends AppCompatActivity implements ViewActivity{
         return signinButton;
     }
 
-    public EditText getEmail() {
-        return email;
+    public String getEmail() {
+        return email.getText().toString();
     }
 
-    public EditText getPassword() {
-        return password;
+    public void setEmail(String email) {
+        this.email.setText(email);
+    }
+
+    public String getPassword() {
+        return password.getText().toString();
     }
 
     @Override
