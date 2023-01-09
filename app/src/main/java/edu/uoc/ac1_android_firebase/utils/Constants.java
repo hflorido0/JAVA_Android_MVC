@@ -32,7 +32,7 @@ public interface Constants {
             {"abans","aede","alada","llogaret","aldol","aldosa","ajada","alotada","asalada","assolellada","atotada","doneu","dada",
             "dal","dalet","sega","dalla","baixada","del","amunt","data","dea","dédal","deessa","del","delada","delat",
             "allà","delta","des","guardada","desè","desolada","desolat","disset","sota","detall","detallada","detallat",
-            "dodo","doella","dol","raig","dolla","dolós","​​dolosa","dos","dosè","dosset","dot","dotal","edat","edetà",
+            "dodo","doella","dol","raig","dolla","dolós","dolosa","dos","dosè","dosset","dot","dotal","edat","edetà",
             "elodea","estada","estadal","desbrossament","estelada","estesa","estesa","ladella","lledoner","beurada","losada",
             "oda","ollada","agosarada","sad","sachuelo","sacia","salada","saldo","saltada","assolellada","seda","sedal",
             "garbell","sedós","sedosa","soda","sodada","sodat","paviment","soldada","soldat","solitud","assolellada","solod",
