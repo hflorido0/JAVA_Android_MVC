@@ -378,7 +378,7 @@ public class Controller {
         HashMap<String, String> values = new HashMap<>();
         values.put(Constants.PROVIDER, provider);
 
-        persistencia.save(loginActivity.getEmail(), Constants.USER_COLLECTION, values);
+        persistencia.update(loginActivity.getEmail(), Constants.USER_COLLECTION, values);
 
         switchActivity(this.loginActivity, this.homeActivity);
     }
