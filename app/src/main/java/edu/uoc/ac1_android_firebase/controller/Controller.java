@@ -175,9 +175,7 @@ public class Controller {
 
     private void createNewParaulogic() {
         Random random = new Random();
-        //TODO: use random when more than 1 element
-        //int rand = random.nextInt(Constants.drawables.length-1);
-        int rand = 0;
+        int rand = random.nextInt(Constants.drawables.length-1);
         int randomDrawable = Constants.drawables[rand];
         String[] paraulogic = Constants.paraulogics[rand];
 
