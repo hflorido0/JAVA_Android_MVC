@@ -6,4 +6,87 @@
     android:layout_height="match_parent"
     tools:context=".view.StadisticsActivity">
 
+    <LinearLayout
+        android:layout_width="341dp"
+        android:layout_height="622dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="52dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:text="Partidas Ganadas Ahorcado:" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="27dp" />
+
+        <TextView
+            android:id="@+id/idStadisticsPartidasAhorcado"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:textAlignment="textEnd" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="27dp" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:text="Partidas Ganadas Paraulogic:" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="27dp" />
+
+        <TextView
+            android:id="@+id/idStadisticsPartidasParaulogic"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="27dp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:text="Inicios de sesión:" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="27dp" />
+
+        <TextView
+            android:id="@+id/idStadisticsIniciosSesion"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="27dp" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:text="Última sesión:" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="27dp" />
+        <TextView
+            android:id="@+id/idUltimaSession"
+            android:layout_width="match_parent"
+            android:layout_height="27dp"
+            android:textAlignment="textEnd" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

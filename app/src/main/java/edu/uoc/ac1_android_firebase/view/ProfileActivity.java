@@ -26,6 +26,8 @@ public class ProfileActivity extends AppCompatActivity implements ViewActivity{
         if(getIntent().getExtras() != null) {
             User user = (User) getIntent().getSerializableExtra(Constants.USER_COLLECTION);
             ((EditText) findViewById(R.id.idName)).setText(user.getName());
+            ((TextView) findViewById(R.id.idProfileEmail)).setText(user.getEmail());
+            ((TextView) findViewById(R.id.idProfileProvider)).setText(user.getProvider().toString());
         }
 
         callControllerWithThisActivityAsParameter();
@@ -40,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity implements ViewActivity{
     public void createAllItemsAsGlobalWithGetters() {
         this.guardar = (Button) findViewById(R.id.idGuardar);
         this.name = (EditText) findViewById(R.id.idName);
-        this.provider = (TextView) findViewById(R.id.idProvider);
+        this.provider = (TextView) findViewById(R.id.idProfileProvider);
     }
 
     public Button getGuardar() {

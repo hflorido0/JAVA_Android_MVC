@@ -2,8 +2,11 @@ package edu.uoc.ac1_android_firebase.dao;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+
+import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +40,14 @@ public class Persistencia {
     public void delete(String email, String collectionPath) {
         db.collection(collectionPath).document(email)
                 .delete();
+    }
+
+    public void incrementByOne(String email, String collectionPath, String valueToIncrement) {
+
+        HashMap<String, Object> values = new HashMap<>();
+        values.put(valueToIncrement, FieldValue.increment(1));
+
+        update(email, collectionPath, values);
     }
 
 }

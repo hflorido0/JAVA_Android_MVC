@@ -7,13 +7,11 @@ public class Paraulogic implements Serializable {
     List<String> respuestas;
     List<String> solutions;
     int img;
-    int p_ganadas;
 
-    public Paraulogic(List<String> respuestas, List<String> solutions, int img, int p_ganadas) {
+    public Paraulogic(List<String> respuestas, List<String> solutions, int img) {
         this.respuestas = respuestas;
         this.solutions = solutions;
         this.img = img;
-        this.p_ganadas = p_ganadas;
     }
 
     public List<String> getRespuestas() {
@@ -26,9 +24,5 @@ public class Paraulogic implements Serializable {
 
     public int getImg() {
         return img;
-    }
-
-    public int getP_ganadas() {
-        return p_ganadas;
     }
 }

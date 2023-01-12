@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.Image;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ public class AhorcadoActivity extends AppCompatActivity implements ViewActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(edu.uoc.ac1_android_firebase.R.layout.activity_ahorcado);
+        ((ProgressBar) findViewById(R.id.idAhorcadoPB)).setVisibility(View.VISIBLE);
         callControllerWithThisActivityAsParameter();
     }
 

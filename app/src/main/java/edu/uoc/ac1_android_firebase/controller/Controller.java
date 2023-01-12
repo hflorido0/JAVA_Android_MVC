@@ -22,15 +22,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import edu.uoc.ac1_android_firebase.dao.Persistencia;
+import edu.uoc.ac1_android_firebase.model.Ahorcado;
 import edu.uoc.ac1_android_firebase.model.Paraulogic;
 import edu.uoc.ac1_android_firebase.model.User;
 import edu.uoc.ac1_android_firebase.utils.Provider;
@@ -125,13 +128,6 @@ public class Controller {
         //TODO:
     }
 
-    private Paraulogic getParaulogicFromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
-        return new Paraulogic((List<String>) documentSnapshot.get(Constants.RESPUESTAS),
-                (List<String>) documentSnapshot.get(Constants.SOLUTIONS),
-                (int)((long) documentSnapshot.get(Constants.PARAULOGIC)),
-                (int)((long) documentSnapshot.get(Constants.P_GANADAS)));
-    }
-
     private void setAhorcadoActivityButtons() {
         //TODO:
     }
@@ -160,6 +156,7 @@ public class Controller {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            loginActivity.setEmail(account.getEmail());
                             saveSession(Provider.GOOGLE.toString());
                         } else {
                             showAlert(loginActivity, "Error en el login");
@@ -182,14 +179,36 @@ public class Controller {
         HashMap<String, Object> values = new HashMap<>();
         values.put(Constants.SOLUTIONS, Arrays.asList(paraulogic));
         values.put(Constants.RESPUESTAS, Arrays.asList());
-        values.put(Constants.P_GANADAS, 0);
         values.put(Constants.PARAULOGIC, randomDrawable);
 
         persistencia.save(loginActivity.getEmail(), Constants.PARAULOGIC_COLLECTION, values);
 
-        Paraulogic para = new Paraulogic(Arrays.asList(),Arrays.asList(paraulogic), randomDrawable, 0);
+        Paraulogic para = new Paraulogic(Arrays.asList(),Arrays.asList(paraulogic), randomDrawable);
 
         setParaulogicPartida(para);
+    }
+
+    private void createAhorcado() {
+        Random random = new Random();
+        int rand = random.nextInt(Constants.ahorcado.length-1);
+        String ahorcadoP = Constants.ahorcado[rand];
+
+        HashMap<String, Object> values = new HashMap<>();
+        values.put(Constants.SOLUTIONS, ahorcadoP);
+        values.put(Constants.RESPUESTAS, Arrays.asList());
+        values.put(Constants.AHORCADO, R.drawable.h1);
+
+        persistencia.save(loginActivity.getEmail(), Constants.AHORCADO_COLLECTION, values);
+
+        Ahorcado ahorcado = new Ahorcado(Arrays.asList(), ahorcadoP, R.drawable.h1);
+
+        setAhorcadopartida(ahorcado);
+    }
+
+    private void setAhorcadopartida(Ahorcado ahorcado) {
+        ahorcadoActivity.getAhoracado()
+                .setImageDrawable(loginActivity.getResources().getDrawable(ahorcado.getImg()));
+        ahorcadoActivity.getAhorcadoWrods().setText(ahorcado.getRespuestas().toString());
     }
 
     private void setParaulogicPartida(Paraulogic para) {
@@ -210,6 +229,20 @@ public class Controller {
             @Override
             public void onClick(View view) {
                 switchActivity(homeActivity, ahorcadoActivity);
+                if (ahorcadoActivity.getProgressBar() != null)
+                    ahorcadoActivity.getProgressBar().setVisibility(View.VISIBLE);
+                persistencia.get(loginActivity.getEmail(), Constants.AHORCADO_COLLECTION)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (!documentSnapshot.exists()) {
+                            createAhorcado();
+                        } else {
+                            setAhorcadopartida(getAhorcadoFromDocumentSnapshot(documentSnapshot));
+                        }
+                        ahorcadoActivity.getProgressBar().setVisibility(View.GONE);
+                    }
+                });
             }
         }));
 
@@ -219,10 +252,11 @@ public class Controller {
                 switchActivity(homeActivity, paraulogicActivity);
                 if (paraulogicActivity.getProgressBar() != null)
                     paraulogicActivity.getProgressBar().setVisibility(View.VISIBLE);
-                persistencia.get(loginActivity.getEmail(), Constants.PARAULOGIC_COLLECTION).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                persistencia.get(loginActivity.getEmail(), Constants.PARAULOGIC_COLLECTION)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.get(Constants.P_GANADAS) == null) {
+                        if (!documentSnapshot.exists()) {
                             createNewParaulogic();
                         } else {
                             setParaulogicPartida(getParaulogicFromDocumentSnapshot(documentSnapshot));
@@ -259,6 +293,18 @@ public class Controller {
                 switchActivity(homeActivity, stadisticsActivity);
             }
         }));
+    }
+
+    private Ahorcado getAhorcadoFromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
+        return new Ahorcado((List<String>) documentSnapshot.get(Constants.RESPUESTAS),
+                (String) documentSnapshot.get(Constants.SOLUTIONS),
+                (int)((long) documentSnapshot.get(Constants.AHORCADO)));
+    }
+
+    private Paraulogic getParaulogicFromDocumentSnapshot(DocumentSnapshot documentSnapshot) {
+        return new Paraulogic((List<String>) documentSnapshot.get(Constants.RESPUESTAS),
+                (List<String>) documentSnapshot.get(Constants.SOLUTIONS),
+                (int)((long) documentSnapshot.get(Constants.PARAULOGIC)));
     }
 
     private boolean checkSession () {
@@ -375,12 +421,20 @@ public class Controller {
         prefs.putString(Constants.PROVIDER, provider);
         prefs.apply();
 
-        HashMap<String, String> values = new HashMap<>();
+        HashMap<String, Object> values = new HashMap<>();
         values.put(Constants.PROVIDER, provider);
 
         persistencia.update(loginActivity.getEmail(), Constants.USER_COLLECTION, values);
 
+        persistencia.incrementByOne(loginActivity.getEmail(), Constants.STADISTICS_COLLECTION,
+                Constants.INICIS_SESSIO);
+
         switchActivity(this.loginActivity, this.homeActivity);
+    }
+
+    private boolean checkUserExists(DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists()) return true;
+        return false;
     }
 
     private void clearSession () {
