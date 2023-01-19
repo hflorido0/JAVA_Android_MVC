@@ -38,32 +38,29 @@ public class AhorcadoController implements ControllerInterface {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Ahorcado ahorcado = getAhorcadoFromDocumentSnapshot(documentSnapshot);
+                        String input = ahorcadoActivity.getAhorcadoInput();
 
                         boolean nextImage = false;
-                        if (ahorcadoActivity.getAhorcadoInput().length() > 1) {
-                            if (ahorcadoActivity.getAhorcadoInput().equals(ahorcado.getSolutions())) {
+                        if (input.length() > 1) {
+                            if (input.equals(ahorcado.getSolutions())) {
                                 //TODO: partida ganada
                             } else {
-                                persistencia.pushElement(Constants.AHORCADO_COLLECTION, (ArrayList<String>) ahorcado.getRespuestas(),
-                                        ahorcadoActivity.getAhorcadoInput(), Constants.RESPUESTAS);
+                                ahorcado.getRespuestas().add(input);
                                 nextImage = true;
                             }
                         } else {
-                            if (((ArrayList<String>) ahorcado.getRespuestas()).contains(ahorcadoActivity.getAhorcadoInput())) {
+                            if (((ArrayList<String>) ahorcado.getRespuestas()).contains(input)) {
                                 //TODO: mostrar letra en la solución
                             } else {
                                 nextImage = true;
                             }
-                            persistencia.pushElement(Constants.AHORCADO_COLLECTION, (ArrayList<String>) ahorcado.getRespuestas(),
-                                    ahorcadoActivity.getAhorcadoInput(), Constants.RESPUESTAS);
+                            ahorcado.getRespuestas().add(input);
                         }
                         if (nextImage) {
                             ahorcado.sumPosImg();
-                            ahorcadoActivity.getAhoracado().setImageDrawable(
-                                    ahorcadoActivity.getResources().getDrawable(Constants.drawablesAhorcado[ahorcado.getPosImg()]));
-                            persistencia.incrementByOne(Constants.AHORCADO_COLLECTION, Constants.POS_IMG);
                         }
-                        ahorcadoActivity.getAhorcadoWrods().setText(((ArrayList<String>) ahorcado.getRespuestas()).toString());
+                        updateAhorcado(ahorcado);
+                        showAhorcado(ahorcado);
                         ahorcadoActivity.getProgressBar().setVisibility(View.GONE);
                     }
                 });
@@ -76,19 +73,33 @@ public class AhorcadoController implements ControllerInterface {
         int rand = random.nextInt(Constants.ahorcado.length - 1);
         String ahorcadoP = Constants.ahorcado[rand];
 
-        HashMap<String, Object> values = new HashMap<>();
-        values.put(Constants.SOLUTIONS, ahorcadoP);
-        values.put(Constants.RESPUESTAS, Arrays.asList());
-        values.put(Constants.AHORCADO, R.drawable.h1);
-
-        persistencia.update(Constants.AHORCADO_COLLECTION, values);
-
         Ahorcado ahorcado = new Ahorcado(Arrays.asList(), ahorcadoP, R.drawable.h1, 0);
+
+        updateAhorcado(ahorcado);
+
         this.ahorcado = ahorcado;
 
         this.ahorcadoActivity.getAhorcadoSecretWord().setText(getSecredWord(ahorcadoP));
 
         setAhorcadopartida(ahorcado);
+    }
+
+    private void updateAhorcado(Ahorcado ahorcado) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put(Constants.SOLUTIONS, ahorcado.getSolutions());
+        values.put(Constants.RESPUESTAS, ahorcado.getRespuestas());
+        values.put(Constants.AHORCADO, ahorcado.getImg());
+        values.put(Constants.POS_IMG, ahorcado.getPosImg());
+
+        persistencia.update(Constants.AHORCADO_COLLECTION, values);
+    }
+
+    private void showAhorcado(Ahorcado ahorcado) {
+        ahorcadoActivity.getAhorcadoWrods().setText(((ArrayList<String>) ahorcado.getRespuestas()).toString());
+        ahorcadoActivity.getAhoracado().setImageDrawable(
+                ahorcadoActivity.getResources().getDrawable(Constants.drawablesAhorcado[ahorcado.getPosImg()]));
+        String secredWord = getSecredWord(""); //TODO: mostrar palabra
+        ahorcadoActivity.getAhorcadoSecretWord().setText(secredWord);
     }
 
     protected String getSecredWord(String solucio) {
