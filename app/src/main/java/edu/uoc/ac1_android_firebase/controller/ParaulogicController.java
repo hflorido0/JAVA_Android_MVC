@@ -1,7 +1,11 @@
 package edu.uoc.ac1_android_firebase.controller;
 
+import android.view.View;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +27,26 @@ public class ParaulogicController implements ControllerInterface {
     }
 
     public void createActivityButtons() {
-        //TODO:
+        this.paraulogicActivity.getParaulogicButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                paraulogicActivity.getProgressBar().setVisibility(View.VISIBLE);
+                persistencia.get(Constants.PARAULOGIC_COLLECTION).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        ArrayList<String> list = (ArrayList<String>) documentSnapshot.get(Constants.SOLUTIONS);
+                        ArrayList<String> current = (ArrayList<String>) documentSnapshot.get(Constants.RESPUESTAS);
+                        if (list.contains(paraulogicActivity.getParaulogicInput())) {
+                            persistencia.pushElement(Constants.PARAULOGIC_COLLECTION, current,
+                                    paraulogicActivity.getParaulogicInput(), Constants.RESPUESTAS);
+                        }
+                        paraulogicActivity.getParaulogicWrods().setText(current.toString());
+                        paraulogicActivity.cleanParaulogicInput();
+                        paraulogicActivity.getProgressBar().setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
     }
 
     protected void createNewParaulogic() {

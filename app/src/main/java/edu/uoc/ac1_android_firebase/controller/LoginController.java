@@ -52,9 +52,7 @@ public class LoginController implements ControllerInterface {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             loginActivity.setEmail(account.getEmail());
-                            if (persistencia == null)
-                                persistencia = new FireStoreDB(FirebaseFirestore.getInstance(), account.getEmail());
-                            sharedPreferences.saveSession(Provider.GOOGLE.toString(), loginActivity, account.getEmail());
+                            persistencia = sharedPreferences.saveSession(Provider.GOOGLE.toString(), loginActivity, account.getEmail());
                             switchActivity(loginActivity, homeActivity);
                         } else {
                             showAlert(loginActivity, "Error en el login");
@@ -103,7 +101,7 @@ public class LoginController implements ControllerInterface {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                sharedPreferences.saveSession(Provider.LOGIN.toString(), loginActivity, email);
+                                persistencia = sharedPreferences.saveSession(Provider.LOGIN.toString(), loginActivity, email);
                                 switchActivity(loginActivity, homeActivity);
                             } else {
                                 showAlert(loginActivity, task.getException().getMessage());
@@ -130,7 +128,7 @@ public class LoginController implements ControllerInterface {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                sharedPreferences.saveSession(Provider.LOGIN.toString(), loginActivity, email);
+                                persistencia = sharedPreferences.saveSession(Provider.LOGIN.toString(), loginActivity, email);
                                 switchActivity(loginActivity, homeActivity);
                             } else {
                                 showAlert(loginActivity, "Error en el login");

@@ -18,7 +18,7 @@ public class AhorcadoActivity extends AppCompatActivity implements ViewActivity{
 
     TextView ahorcadoWrods;
     EditText ahorcadoInput;
-    TextView paraulogicSecretWord;
+    TextView ahorcadoSecretWord;
     ImageView ahoracado;
     ProgressBar progressBar;
     Button ahorcadoButton;
@@ -39,7 +39,7 @@ public class AhorcadoActivity extends AppCompatActivity implements ViewActivity{
     @Override
     public void createAllItemsAsGlobalWithGetters() {
         this.ahorcadoWrods = (TextView) findViewById(R.id.idParaulesAhorcado);
-        this.paraulogicSecretWord = (TextView) findViewById(R.id.idAhorcadoSecreto);
+        this.ahorcadoSecretWord = (TextView) findViewById(R.id.idAhorcadoSecreto);
         this.ahorcadoInput = (EditText) findViewById(R.id.idPraulaAhorcado);
         this.ahoracado = (ImageView) findViewById(R.id.idAhorcadoImg);
         this.progressBar = (ProgressBar) findViewById(R.id.idAhorcadoPB);
@@ -50,12 +50,12 @@ public class AhorcadoActivity extends AppCompatActivity implements ViewActivity{
         return ahorcadoWrods;
     }
 
-    public EditText getAhorcadoInput() {
-        return ahorcadoInput;
+    public String getAhorcadoInput() {
+        return ahorcadoInput.getText().toString();
     }
 
-    public TextView getParaulogicSecretWord() {
-        return paraulogicSecretWord;
+    public TextView getAhorcadoSecretWord() {
+        return ahorcadoSecretWord;
     }
 
     public ImageView getAhoracado() {

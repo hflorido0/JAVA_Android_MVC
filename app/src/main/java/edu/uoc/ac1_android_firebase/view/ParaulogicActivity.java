@@ -46,8 +46,12 @@ public class ParaulogicActivity extends AppCompatActivity implements ViewActivit
         return paraulogicWrods;
     }
 
-    public EditText getParaulogicInput() {
-        return paraulogicInput;
+    public String getParaulogicInput() {
+        return paraulogicInput.getText().toString();
+    }
+
+    public void cleanParaulogicInput() {
+        paraulogicInput.setText("");
     }
 
     public ImageView getParaulogic() {

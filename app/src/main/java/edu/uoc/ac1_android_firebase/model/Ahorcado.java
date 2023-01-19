@@ -7,11 +7,13 @@ public class Ahorcado implements Serializable {
     String solutions;
     List<String> respuestas;
     int img;
+    int posImg;
 
-    public Ahorcado(List<String> respuestas, String solutions, int img) {
+    public Ahorcado(List<String> respuestas, String solutions, int img, int posImg) {
         this.respuestas = respuestas;
         this.solutions = solutions;
         this.img = img;
+        this.posImg = posImg;
     }
 
     public List<String> getRespuestas() {
@@ -24,5 +26,13 @@ public class Ahorcado implements Serializable {
 
     public int getImg() {
         return img;
+    }
+
+    public int getPosImg() {
+        return posImg;
+    }
+
+    public void sumPosImg() {
+        this.posImg++;
     }
 }

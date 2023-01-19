@@ -8,6 +8,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import org.w3c.dom.Document;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,15 @@ public class FireStoreDB {
 
         HashMap<String, Object> values = new HashMap<>();
         values.put(valueToSetTime,  FieldValue.serverTimestamp());
+
+        update(collectionPath, values);
+    }
+
+    public void pushElement(String collectionPath, ArrayList<String> current, String valueToPush, String arrayName) {
+        current.add(valueToPush);
+
+        HashMap<String, Object> values = new HashMap<>();
+        values.put(arrayName, current);
 
         update(collectionPath, values);
     }
