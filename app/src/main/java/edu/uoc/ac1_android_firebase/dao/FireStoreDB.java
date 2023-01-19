@@ -17,37 +17,46 @@ import edu.uoc.ac1_android_firebase.model.Paraulogic;
 import edu.uoc.ac1_android_firebase.model.Stadistics;
 import edu.uoc.ac1_android_firebase.utils.Constants;
 
-public class Persistencia {
+public class FireStoreDB {
     private FirebaseFirestore db;
+    private String email;
 
-    public Persistencia(FirebaseFirestore db) {
+    public FireStoreDB(FirebaseFirestore db, String email) {
         this.db = db;
+        this.email = email;
     }
 
-    public void save(String email, String collectionPath, Map<?,?> map) {
+    public void save(String collectionPath, Map<?,?> map) {
         db.collection(collectionPath).document(email)
                 .set(map);
     }
 
-    public Task<DocumentSnapshot> get(String email, String collectionPath) {
+    public Task<DocumentSnapshot> get(String collectionPath) {
         return db.collection(collectionPath).document(email).get();
     }
 
-    public void update(String email, String collectionPath,  Map<?,?> map) {
+    public void update(String collectionPath,  Map<?,?> map) {
         db.collection(collectionPath).document(email).set(map, SetOptions.merge());
     }
 
-    public void delete(String email, String collectionPath) {
+    public void delete(String collectionPath) {
         db.collection(collectionPath).document(email)
                 .delete();
     }
 
-    public void incrementByOne(String email, String collectionPath, String valueToIncrement) {
+    public void incrementByOne(String collectionPath, String valueToIncrement) {
 
         HashMap<String, Object> values = new HashMap<>();
         values.put(valueToIncrement, FieldValue.increment(1));
 
-        update(email, collectionPath, values);
+        update(collectionPath, values);
     }
 
+    public void setTime(String collectionPath, String valueToSetTime) {
+
+        HashMap<String, Object> values = new HashMap<>();
+        values.put(valueToSetTime,  FieldValue.serverTimestamp());
+
+        update(collectionPath, values);
+    }
 }

@@ -48,7 +48,8 @@
         <TextView
             android:id="@+id/idStadisticsPartidasParaulogic"
             android:layout_width="match_parent"
-            android:layout_height="27dp"/>
+            android:layout_height="27dp"
+            android:textAlignment="textEnd" />
 
         <Space
             android:layout_width="match_parent"
@@ -67,7 +68,8 @@
         <TextView
             android:id="@+id/idStadisticsIniciosSesion"
             android:layout_width="match_parent"
-            android:layout_height="27dp"/>
+            android:layout_height="27dp"
+            android:textAlignment="textEnd" />
 
         <Space
             android:layout_width="match_parent"
@@ -82,6 +84,7 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="27dp" />
+
         <TextView
             android:id="@+id/idUltimaSession"
             android:layout_width="match_parent"

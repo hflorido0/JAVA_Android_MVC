@@ -23,6 +23,7 @@ public interface Constants {
     String PAR_PARAULOGIC = "paraules_acertades_paraulogic";
     String PAR_AHORCADO = "partides_ahorcado";
     String INICIS_SESSIO = "inicis_sessio";
+    String ULTIM_INICI = "ultim_inici";
 
     int[] drawables = {R.drawable.p1, R.drawable.p2};
     String[][] paraulogics = {{ "anap", "anar", "anió", "anoa", "arna", "línia", "inri", "ioni", "naia", "naipe", "nana",
@@ -50,4 +51,5 @@ public interface Constants {
             "aiorina", "arponar", "arranar", "arriana", "non-non", "panarra", "papaïna", "pariona", "porrona", "propina", "annonari",
             "iranià", "opianina", "paranoia", "propinar", "aparionar", "posar-se", "aporrinar", "ninot", "nona", "dolenta",
             "aparionar", "aporrinar", "opinar", "paranoia", "pariona", "piorna", "pirona", "propina", "propinar" };
+
 }
