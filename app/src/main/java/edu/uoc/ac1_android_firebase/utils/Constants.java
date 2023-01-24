@@ -3,32 +3,11 @@ package edu.uoc.ac1_android_firebase.utils;
 import edu.uoc.ac1_android_firebase.R;
 
 public interface Constants {
-    int GOOGLE_SIGN_IN = 100;
-    String USER_COLLECTION = "users";
-    String PARAULOGIC_COLLECTION = "paraulogic";
-    String AHORCADO_COLLECTION = "ahorcado";
-    String STADISTICS_COLLECTION = "stadistics";
-
-    String NAME = "name";
-    String EMAIL = "email";
-    String PROVIDER = "provider";
-    String PARTIDA = "partida";
-    String SOLUTIONS = "solutions";
-    String RESPUESTAS = "respuestas";
-    String LETRAS = "letras";
-    String H_GANADAS = "h_ganads";
-    String PARAULOGIC = "paraulogic";
-    String AHORCADO = "ahorcado";
-    String POS_IMG = "pos_img";
-
-    String PAR_PARAULOGIC = "paraules_acertades_paraulogic";
-    String PAR_AHORCADO = "partides_ahorcado";
-    String INICIS_SESSIO = "inicis_sessio";
-    String ULTIM_INICI = "ultim_inici";
 
     int[] drawablesAhorcado = {R.drawable.h1, R.drawable.h2, R.drawable.h3, R.drawable.h4, R.drawable.h5, R.drawable.h6, R.drawable.h7};
 
     int[] drawables = {R.drawable.p1, R.drawable.p2};
+
     String[][] paraulogics = {{ "anap", "anar", "anió", "anoa", "arna", "línia", "inri", "ioni", "naia", "naipe", "nana",
             "xaval", "napa", "niar", "nina", "nipó", "noia", "nora", "nori", "orni", "pana", "pian", "poni", "prono", "raní",
             "ainar", "arnar", "arran", "irona", "napar", "napia", "ninot", "norai", "orina", "adornar", "panna", "paona", "piano",
